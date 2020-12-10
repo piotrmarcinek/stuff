@@ -37,8 +37,8 @@ def main():
     inventory_list["t07"]["hosts"] = []
     inventory_list["t07"]["vars"] = {}
     inventory_list["fw"] = {}
-    inventory_list["fw"]["hosts"] = []
-    inventory_list["fw"]["vars"] = {}
+    inventory_list["cisco_fw"]["hosts"] = []
+    inventory_list["cisco_fw"]["vars"] = {"ansible_connection": "network_cli", "ansible_network_os": "ios"}
     inventory_list["kiosk"] = {}
     inventory_list["kiosk"]["hosts"] = []
     inventory_list["kiosk"]["vars"] = {}
@@ -66,15 +66,15 @@ def main():
     for i in range(0, len(data["result"])):
         name = data["result"][i]["name"].strip()
         element_name = "{}{}".format( name[0:5], name [-2:])
-        inventory_list[element_name[-2:]]["hosts"].append(element_name)
+        inventory_list["cisco_fw"]["hosts"].append(element_name)
         inventory_list["all"]["hosts"].append(element_name)
 
-    data = getinventory('JUNIPER_SSG5')
-    for i in range(0, len(data["result"])):
-        name = data["result"][i]["name"].strip()
-        element_name = "{}{}".format( name[0:5], name [-2:])
-        inventory_list[element_name[-2:]]["hosts"].append(element_name)
-        inventory_list["all"]["hosts"].append(element_name)
+    #data = getinventory('JUNIPER_SSG5')
+    #for i in range(0, len(data["result"])):
+    #    name = data["result"][i]["name"].strip()
+    #    element_name = "{}{}".format( name[0:5], name [-2:])
+    #    inventory_list[element_name[-2:]]["hosts"].append(element_name)
+    #    inventory_list["all"]["hosts"].append(element_name)
 
     data = getinventory('SWITCHE')
     for i in range(0, len(data["result"])):
