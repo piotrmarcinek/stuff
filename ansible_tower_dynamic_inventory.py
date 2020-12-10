@@ -36,7 +36,7 @@ def main():
     inventory_list["t07"] = {}
     inventory_list["t07"]["hosts"] = []
     inventory_list["t07"]["vars"] = {}
-    inventory_list["fw"] = {}
+    inventory_list["cisco_fw"] = {}
     inventory_list["cisco_fw"]["hosts"] = []
     inventory_list["cisco_fw"]["vars"] = {"ansible_connection": "network_cli", "ansible_network_os": "ios"}
     inventory_list["kiosk"] = {}
