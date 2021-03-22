@@ -5,6 +5,7 @@ import urllib
 import json
 import pyodbc
 import os
+import sys
 
 centreon_user = ''
 centreon_pass = ''
@@ -17,16 +18,19 @@ sql_database = ""
 def main():
         token=getauthtoken()
         changed=0
-        cnxn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER='+sql_host+';DATABASE='+sql_database+';UID='+sql_user+';PWD='+ sql_pass)
+        try: 
+                cnxn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER='+sql_host+';DATABASE='+sql_database+';UID='+sql_user+';PWD='+ sql_pass)
+        except Exception as e:
+                print('SQL Connection Error: {}'.format(e));
+                sys.exit(2);
         cursor = cnxn.cursor()
         cursor.execute("SELECT CentreonName,CentreonLink FROM [Centreon] WHERE CentreonStatus='Monitorowany' and CentreonLink IS NOT NULL") 
         row = cursor.fetchone() 
-
         while row:
                 host = row[0]
                 url = row[1]
                 db_url = get_url(row[0], token)
-                if db_url != url and db_url is not None:
+                if db_url != url and url is not None:
                         set_url(host, url, token)
                         changed = 1
                 row = cursor.fetchone()
